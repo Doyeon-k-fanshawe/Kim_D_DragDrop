@@ -1,15 +1,21 @@
 (() => {
 	// make the connections to the elements on the page
 	// that we want the user to interact with
-	const theButtons = document.querySelectorAll("#buttonHolder img"),
-				theGameBoard = document.querySelector(".puzzle-board");
+	let theThumbnails = document.querySelectorAll("#buttonHolder img"),
+			puzzlePieces = document.querySelectorAll(".puzzle-pieces *"),
+			dropZones = document.querySelectorAll(".drop-zone"),
+			theGameBoard = document.querySelector(".puzzle-board");
 
+			// theLink = document.querySelector("a")
+			//theLink.addEventListener('click', function(event) { event.preventDefault();})
+
+	// theThumbnails collects all of the image elements into an array-like co
 	// theButtons becomes this:
 	// [
-	// <img>
-	// <img>
-	// <img>
-	// <img>
+	// <img scr="images/buttonZero.jpg" alt="thumbnail">
+	// <img scr="images/buttonOne.jpg" alt="thumbnail">
+	// <img scr="images/buttonTwo.jpg" alt="thumbnail">
+	// <img scr="images/buttonThree.jpg" alt="thumbnail">
 	// ]
 	//
 
@@ -28,7 +34,37 @@
 		// search for MDN Javascript Templete String
 	}
 
-	// these are the "triggers" we want the user to use to fire  off events
-	theButtons.forEach(button => button.addEventListener("click", changeBgImg));
+	function startDrag(event) {
+		// save a reference to the element we're dragging
+		event.dataTransfer.setData("draggedElement", event.target.id);
+	}
 
+	function draggedOver(event) {
+		// event is the user event ( a click, a drag, a drop)
+		// soem elements have default behaviour (like an anchor tag) -> we need to block that behaviour
+		// and script our own
+		// that's what event.preventDefault() does -> override the default behaviour (block it)
+		event.preventDefault();
+	}
+
+	function handleDrop(event) {
+		event.preventDefault();
+		let currentEl = event.dataTransfer.getData("draggedElement");
+		console.log(`dropped this element:`, currentEl);
+
+		// appendChild (add child) is a built-in JavaScript method that adds an element to a containing (parent) element
+
+		// the "this" keyword is a reference to the element you're dropping onto (or into)
+		this.appendChild(document.querySelector(`#${currentEl}`));
+	}
+
+	// add event hadnling here -> loop through theThumbnails array and add event handling to each image
+	// these are the "triggers" we want the user to use to fire  off events
+	theThumbnails.forEach(button => button.addEventListener("click", changeBgImg));
+	puzzlePieces.forEach(piece => piece.addEventListener("dragstart", startDrag));
+
+	dropZones.forEach(zone => {
+		zone.addEventListener("dragover", draggedOver);
+		zone.addEventListener("drop", handleDrop);
+	});
 })();
