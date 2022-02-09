@@ -6,6 +6,8 @@
 			dropZones = document.querySelectorAll(".drop-zone"),
 			theGameBoard = document.querySelector(".puzzle-board");
 
+	const piecePaths = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
 			// theLink = document.querySelector("a")
 			//theLink.addEventListener('click', function(event) { event.preventDefault();})
 
@@ -19,7 +21,7 @@
 	// ]
 	//
 
-	function changeBgImg() {
+	function changeBgImgSet() {
 		// debugger; //pause our code execution at this point
 		// way 1 ------------------------
 		// let key = this.dataset.bgref;
@@ -32,6 +34,10 @@
 
 		// `` => this is a javascript templete string. You can use it to wite a bit of inline javascript with will be interpreted at runtime
 		// search for MDN Javascript Templete String
+
+		piecePaths.forEach((piece, index) => {
+			puzzlePieces[index].src = `images/${piece + this.dataset.bgref}.jpg`;
+		})
 	}
 
 	function startDrag(event) {
@@ -60,7 +66,7 @@
 
 	// add event hadnling here -> loop through theThumbnails array and add event handling to each image
 	// these are the "triggers" we want the user to use to fire  off events
-	theThumbnails.forEach(button => button.addEventListener("click", changeBgImg));
+	theThumbnails.forEach(button => button.addEventListener("click", changeBgImgSet));
 	puzzlePieces.forEach(piece => piece.addEventListener("dragstart", startDrag));
 
 	dropZones.forEach(zone => {
